@@ -1,0 +1,3 @@
+# django-myfeeds
+
+- Feed Manager

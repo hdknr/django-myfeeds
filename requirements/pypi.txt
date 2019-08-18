@@ -1,0 +1,14 @@
+# Django
+django
+pytz
+
+# RSS
+feedparser
+
+# tools
+django-click
+
+# test
+django-nose
+coverage
+factory_boy
