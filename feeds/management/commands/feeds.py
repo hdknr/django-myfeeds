@@ -20,13 +20,16 @@ def main(ctx):
 @click.option('--url', '-u', default=None)
 @click.pass_context
 def poll(ctx, id, url):
-    feed = None 
+    feeds = None 
     if id:
-        feed = models.Feed.objects.filter(id=id).first()
+        feeds = models.Feed.objects.filter(id=id)
     elif url:
-        feed, created = models.Feed.objects.get_or_create(url=url)
+        feeds = [models.Feed.objects.get_or_create(url=url)]
+    else:
+        feeds = models.Feed.objects.all()
 
-    feed and feed.poll()
+    for feed in feeds:
+        feed.poll()
 
 
 @main.command()
