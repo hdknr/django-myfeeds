@@ -81,9 +81,9 @@ def get_entry_description(entry):
 
 
 def get_entry_published_time(entry):
-    if not hasattr(entry, 'published_parsed'):
-        return None
+    dt = entry.get('published_parsed', entry.get('updated_parsed', None))
 
-    published_time = get_published_datetime(entry.published_parsed) 
     now = timezone.now()
+    published_time = dt and get_published_datetime(dt) or now
     return published_time <= now and published_time or now
+
