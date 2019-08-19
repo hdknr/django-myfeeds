@@ -87,3 +87,6 @@ def get_entry_published_time(entry):
     published_time = dt and get_published_datetime(dt) or now
     return published_time <= now and published_time or now
 
+
+def markdown_link(url, title):
+    return f"[{title}]({url})"

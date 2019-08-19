@@ -48,3 +48,7 @@ class Entry(object):
     @cached_property
     def prev_unread(self):
         return self.feed.entry_set.filter(id__lt=self.id, is_read=False).order_by('id').last()
+
+    @cached_property
+    def markdown_link(self):
+        return  utils.markdown_link(self.link, self.title)
