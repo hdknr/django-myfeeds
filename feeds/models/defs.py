@@ -41,6 +41,7 @@ class Entry(Timestamp, methods.Entry):
     published_at = models.DateTimeField(
         _('Entry Published At'), auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    trashed = models.BooleanField(default=False)
 
     class Meta:
         abstract = True

@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.template import engines
 from .. import models
 from ..models import defs
+from . import inlines
 
 
 def render(src, request=None, engine_name='django', safe=True, **ctx):
@@ -29,6 +30,9 @@ class EntryAdmin(admin.ModelAdmin):
         'updated_at', 'feed', 
         'title_and_link', 'html', 'navigates']
     list_filter = ['is_read']
+    inlines = [
+        inlines.EntryTagItemInline,
+    ]
 
     def navigates(self, obj):
         src = '''
