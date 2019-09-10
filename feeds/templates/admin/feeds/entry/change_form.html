@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{# https://github.com/django/django/blob/master/django/contrib/admin/templates/admin/change_form.html #}
+
+{% block object-tools-items %} {{ block.super }}
+<li><a id="save-instance" href="#">{% trans 'Save' %}</a></li>
+{% endblock %}
+
+{% block admin_change_form_document_ready %} {{ block.super }}
+<script>
+  (function($){
+    $("a#save-instance").click(function(){
+      $("input[name='_save']").trigger('click');
+    })
+  })(django.jQuery);
+</script>
+{% endblock %}

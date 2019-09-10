@@ -33,6 +33,7 @@ class EntryAdmin(admin.ModelAdmin):
     inlines = [
         inlines.EntryTagItemInline,
     ]
+    search_fields = ['title', 'description']
 
     def navigates(self, obj):
         src = '''
