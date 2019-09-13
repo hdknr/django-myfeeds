@@ -34,6 +34,7 @@ class EntryAdmin(admin.ModelAdmin):
         inlines.EntryTagItemInline,
     ]
     search_fields = ['title', 'description']
+    actions = ['mark_as_read', 'mark_as_trashed']
 
     def navigates(self, obj):
         src = '''
@@ -43,12 +44,24 @@ class EntryAdmin(admin.ModelAdmin):
         return render(src, current=obj, next_unread=obj.next_unread, prev_unread=obj.prev_unread) 
 
     def title_and_link(self, obj):
-        title = '<i class="fas fa-external-link-alt"></i>'
         src = '''
-            <a href="{{ link }}" target="_feed">{{ title|safe }}</a> &nbsp;
-            <span class="markdown">{{ current.markdown_link}}</span>
+            <a href="{{ link }}" target="_feed"><i class="fas fa-external-link-alt"></i></a> &nbsp;
+            <span>{{ current.title }}</span>&nbsp;
+            <a href="#" class="markdown" title="{{ current.markdown_link}}"><i class="far fa-copy"></i></a>
         '''
-        return render(src, current=obj, title=title, link=obj.link)
+        return render(src, current=obj, link=obj.link)
 
     def html(self, obj):
         return mark_safe(obj.description)
+
+    def mark_as_read(self, request, queryset):
+        counts = queryset.update(is_read=True)
+        self.message_user(request, f"{counts} successfully marked as read.")
+
+    mark_as_read.short_description = _('Mark as Read')
+
+    def mark_as_trashed(self, request, queryset):
+        counts = queryset.update(is_read=True, trashed=True)
+        self.message_user(request, f"{counts} successfully marked as trashed.")
+
+    mark_as_trashed.short_description = _('Mark as Trashed')
