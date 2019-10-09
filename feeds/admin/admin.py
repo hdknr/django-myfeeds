@@ -17,18 +17,20 @@ class FeedAdmin(admin.ModelAdmin):
     list_display = [f.name for f in models.Feed._meta.fields]
     exclude = ['created_at']
     readonly_fields = ['updated_at']
+    inlines = [
+        inlines.FeedTagItemInline,
+    ]
 
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
     list_display = [
-        f.name for f in models.Entry._meta.fields 
+        f.name for f in models.Entry._meta.fields
         if f.name not in ['description', 'link', 'created_at', 'updated_at']
     ]
-    exclude = ['created_at', 'description', 'title', 'link']
+    exclude = ['created_at', 'description', 'title', 'link', 'feeds', 'feed']
     readonly_fields = [
-        'updated_at', 'feed', 
-        'title_and_link', 'html', 'navigates']
+        'title_and_link', 'html', 'navigates', 'feeds', 'updated_at']
     list_filter = ['is_read']
     inlines = [
         inlines.EntryTagItemInline,
@@ -41,7 +43,7 @@ class EntryAdmin(admin.ModelAdmin):
         {% if prev_unread %}<p><a href="{% url 'admin:feeds_entry_change' prev_unread.id %}"> {{ prev_unread.id }}.{{ prev_unread }} </a> </p>{%  endif %}
         {% if next_unread %}<p><a href="{% url 'admin:feeds_entry_change' next_unread.id %}"> {{ next_unread.id }}.{{ next_unread }} </a> </p>{%  endif %}
         '''
-        return render(src, current=obj, next_unread=obj.next_unread, prev_unread=obj.prev_unread) 
+        return render(src, current=obj, next_unread=obj.next_unread, prev_unread=obj.prev_unread)
 
     def title_and_link(self, obj):
         src = '''

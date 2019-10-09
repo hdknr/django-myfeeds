@@ -29,7 +29,7 @@ def poll(ctx, id, url):
         feeds = models.Feed.objects.all()
 
     for feed in feeds:
-        feed.poll()
+        models.Entry.objects.poll_for(feed)
 
 
 @main.command()
